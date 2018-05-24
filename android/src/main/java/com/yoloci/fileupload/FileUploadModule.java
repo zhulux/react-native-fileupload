@@ -22,6 +22,7 @@ import com.facebook.react.bridge.WritableMap;
 import java.io.FileInputStream;
 
 import org.json.JSONObject;
+import android.webkit.MimeTypeMap;
 
 public class FileUploadModule extends ReactContextBaseJavaModule {
 
@@ -109,11 +110,18 @@ public class FileUploadModule extends ReactContextBaseJavaModule {
                 ReadableMap file = files.getMap(i);
                 String filename = file.getString("filename");
                 String filepath = file.getString("filepath");
+                String name = file.getString("name");
                 filepath = filepath.replace("file://", "");
                 fileInputStream = new FileInputStream(filepath);
 
+                String extension = MimeTypeMap.getFileExtensionFromUrl(filepath);
+                String contentType = "application/jped";
+                if (extension != null) {
+                    contentType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension);
+                }
+
                 outputStream.writeBytes(twoHyphens + boundary + lineEnd);
-                outputStream.writeBytes("Content-Disposition: form-data; name=\"image\";filename=\"" + filename + "\"" + lineEnd);
+                outputStream.writeBytes("Content-Disposition: form-data; name=\""+ name +"\";Content-Type=\"" + contentType + "\";filename=\"" + filename + "\"" + lineEnd);
                 outputStream.writeBytes(lineEnd);
 
                 bytesAvailable = fileInputStream.available();
