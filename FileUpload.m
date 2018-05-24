@@ -4,7 +4,7 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 
 #import <React/RCTBridgeModule.h>
-#import "RCTLog.h"
+#import <React/RCTLog.h>
 
 @interface FileUpload : NSObject <RCTBridgeModule>
 @end
